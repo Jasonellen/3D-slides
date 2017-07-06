@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>3D</title>
+	<style>
+		body{
+			background: lightgrey;
+		}
+		.eyes{
+			perspective: 1200px;
+			perspective-origin: 500px 200px;
+		}
+		.box{
+			transform-style: preserve-3d;
+			position: absolute;
+			top: 100px; left: 400px;
+		}
+		.box div{
+			width: 200px;
+			height: 200px;
+			position: absolute;
+			font-size: 80px;
+			line-height: 200px;
+			text-align: center;
+			color: white;
+			transition: 0.3s;
+		}
+	</style>
+</head>
+<body>
+	<div class="eyes">
+		<div class="box">
+			<div class="color1 d">1</div>
+			<div class="color2 d">2</div>
+			<div class="color3 d">3</div>
+			<div class="color4 d">4</div>
+			<div class="color5 d">5</div>
+			<div class="color6 d">6</div>
+			<div class="color7 d">7</div>
+		</div>
+	</div>
+
+	<script>
+
+		var rotate=[
+			'translateZ(100px) translateX(-300px)',
+			'translateZ(200px) translateX(-200px)',
+			'translateZ(300px) translateX(-100px)',
+			'translateZ(400px)',
+			'translateZ(300px) translateX(100px)',
+			'translateZ(200px) translateX(200px)',
+			'translateZ(100px) translateX(300px)',
+		];
+		var colors =['gray','cyan','red','green','brown','olive','purple']
+
+		var div = document.querySelectorAll('.d')
+		var box = document.querySelector('.box')
+		var length=div.length;
+		var onOff =true
+		Location(div[3]); //网页加载时默认样式
+
+		//循环点击跟换对象到最前方
+		for(var i=0; i<div.length;i++){
+			div[i].index= i;
+			div[i].onclick=function(){
+				if(this.index<3){
+					for(var j=0; j<3-this.index; j++){
+						var div = document.querySelectorAll('.d')
+						box.insertBefore(div[length-1],div[0]);
+					}
+				}else{
+					for(var j=0; j<this.index-3; j++){
+						var div = document.querySelectorAll('.d')
+						box.appendChild(div[0]);
+					}
+				}
+				index();  //向前向后添加后重新计数
+				Location(this); //执行方法，设置每个div的样式
+			}
+		}
+		//计数方法
+		function index(){
+			var div = document.querySelectorAll('.d')
+			for(var i=0;i<div.length;i++){
+				div[i].index= i;
+			}
+		}
+		//设置样式
+		function Location(obj){
+			var div = document.querySelectorAll('.d')
+			var length = div.length;
+			for(var i=0; i<length;i++){
+				div[i].style.transform = rotate[i];
+				if(onOff){ //颜色只设置一次
+					div[i].style.background = colors[i];
+				}
+			}
+			onOff = false
+		}
+	</script>
+</body>
+</html>
